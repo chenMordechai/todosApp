@@ -4,7 +4,7 @@ const { useSelector, useDispatch } = ReactRedux
 
 
 import { userService } from '../services/user.service.js'
-import {SET_TODOS_ISDONE_LENGTH} from '../store/store.js'
+import {SET_TODOS_ISDONE_LENGTH , SET_USER} from '../store/store.js'
 
 import { LoginSignup } from './LoginSignup.jsx'
 import { ProgressBar } from './ProgressBar.jsx'
@@ -12,7 +12,7 @@ import { ProgressBar } from './ProgressBar.jsx'
 export function AppHeader() {
     const dispatch = useDispatch()
     // get from storeState
-    const isCartShown = useSelector(storeState => storeState.isCartShown)
+    // const isCartShown = useSelector(storeState => storeState.isCartShown)
     const user = useSelector(storeState => storeState.loggedinUser)
 
     const todosDoneLength = useSelector(storeState => storeState.todosIsDoneLength)
@@ -23,6 +23,7 @@ export function AppHeader() {
     },[todosLength])
 
     function onSetUser(user) {
+        console.log('user:', user)
         dispatch({ type: SET_USER, user })
     }
 
@@ -52,14 +53,15 @@ export function AppHeader() {
             </nav>
             <h1>My App</h1>
                 <ProgressBar todosLength={todosLength} todosDoneLength={todosDoneLength}/>
-
-            {/* {user && <section className="user-info">
-                <p>{user.fullname} <span>${user.score.toLocaleString()}</span></p>
+          
+            {user && <section className="user-info">
+                <p>{user.fullname}</p>
                 <button onClick={onLogout}>Logout</button>
             </section>}
+            
             {!user && <section className="user-info">
                 <LoginSignup onSetUser={onSetUser} />
-        </section>} */}
+        </section>}
         </header >
     )
 }

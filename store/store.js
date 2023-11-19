@@ -10,10 +10,12 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_TODOS_ISDONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
 
+export const SET_USER = 'SET_USER'
+
 const initialState = {
     todos: [],
     currFilterBy: {txt:'' , status:'all' },
-    loggedinUser: {},
+    loggedinUser: null,
     todosIsDoneLength:0,
 }
 
@@ -45,6 +47,10 @@ function appReducer(state = initialState, action) {
                        
                        case SET_FILTER:
                           return {... state , currFilterBy: action.filterBy}
+                       
+                       case SET_USER:
+                          return {... state , loggedinUser: action.user}
+
 
         default:
             return state

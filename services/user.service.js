@@ -9,16 +9,11 @@ export const userService = {
     login,
     logout,
     signup,
-    getById,
     getLoggedinUser,
-    updateScore
+    addActivity
 }
 
-window.us = userService
 
-function getById(userId) {
-    return storageService.get(STORAGE_KEY, userId)
-}
 
 function login({ username, password }) {
     return storageService.query(STORAGE_KEY)
@@ -31,24 +26,24 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, score: 10000 }
+    const user = { username, password, fullname, balance:10000, activities:[] }
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
 
-function updateScore(diff) {
-    return userService.getById(getLoggedinUser()._id)
-        .then(user => {
-            if (user.score + diff < 0) return Promise.reject('No credit')
-            user.score += diff
-            return storageService.put(STORAGE_KEY, user)
+// function updateBalance(diff) {
+//     return userService.getById(getLoggedinUser()._id)
+//         .then(user => {
+//             if (user.balance + diff < 0) return Promise.reject('No credit')
+//             user.balance += diff
+//             return storageService.put(STORAGE_KEY, user)
 
-        })
-        .then(user => {
-            _setLoggedinUser(user)
-            return user.score
-        })
-}
+//         })
+//         .then(user => {
+//             _setLoggedinUser(user)
+//             return user.balance
+//         })
+// }
 
 function logout() {
     sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN)
@@ -60,14 +55,11 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }
+    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
 
-// Test Data
-// userService.signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
-// userService.login({username: 'muki', password: 'muki1'})
+function addActivity(){
 
-
-
+}
