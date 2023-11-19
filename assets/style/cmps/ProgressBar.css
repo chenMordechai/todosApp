@@ -1,0 +1,12 @@
+.progress-bar {
+    width: 100px;
+    height: 20px;
+    outline: 2px solid black;
+}
+
+.progress-bar .inside {
+    height: 100%;
+    /* width: 20%; */
+    background-color: green;
+    transition: 1s;
+}
