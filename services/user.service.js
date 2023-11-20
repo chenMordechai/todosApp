@@ -11,7 +11,9 @@ export const userService = {
     signup,
     getLoggedinUser,
     addActivity,
-    save
+    save,
+    updateBalance,
+    getById
 }
 
 
@@ -42,19 +44,22 @@ function signup({ username, password, fullname }) {
         .then(_setLoggedinUser)
 }
 
-// function updateBalance(diff) {
-//     return userService.getById(getLoggedinUser()._id)
-//         .then(user => {
-//             if (user.balance + diff < 0) return Promise.reject('No credit')
-//             user.balance += diff
-//             return storageService.put(STORAGE_KEY, user)
+function getById(userId) {
+    return storageService.get(STORAGE_KEY, userId)
+}
 
-//         })
-//         .then(user => {
-//             _setLoggedinUser(user)
-//             return user.balance
-//         })
-// }
+function updateBalance(diff) {
+    return userService.getById(getLoggedinUser()._id)
+        .then(user => {
+            user.balance += diff
+            return storageService.put(STORAGE_KEY, user)
+
+        })
+        .then(user => {
+            _setLoggedinUser(user)
+            return user.balance
+        })
+}
 
 function logout() {
     sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN)
@@ -79,16 +84,24 @@ function _setLoggedinUser(user) {
     return userToSave
 }
 
-function getById(userId) {
-    return storageService.get(STORAGE_KEY, userId)
-
-}
 
 function save(user) {
     return storageService.put(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
 
-function addActivity() {
+function addActivity(type, txt) {
+    // console.log('type,txt:', type, txt)
+    const activity ={
+        txt : `${type} ${txt}`,
+        ad : Date.now()
+    }
+    
+    return userService.getById(getLoggedinUser()._id)
+    .then(user => {
+        user.activities.push(activity)
+        return storageService.put(STORAGE_KEY, user)
+    })
+    .then(_setLoggedinUser)
 
 }

@@ -2,8 +2,6 @@
 
 export function ProgressBar ({todosLength,todosDoneLength}){
 
-
-
     const style ={
         width : todosDoneLength /todosLength * 100
     }

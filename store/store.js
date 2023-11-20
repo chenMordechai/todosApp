@@ -11,7 +11,7 @@ export const SET_FILTER = 'SET_FILTER'
 export const SET_TODOS_ISDONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
 
 export const SET_USER = 'SET_USER'
-// export const SAVE_USER = 'SAVE_USER'
+export const SET_USER_BALANCE = 'SET_USER_BALANCE'
 
 const initialState = {
     todos: [],
@@ -51,6 +51,10 @@ function appReducer(state = initialState, action) {
 
         case SET_USER:
             return { ...state, loggedinUser: action.user }
+
+        case SET_USER_BALANCE:
+            const user = { ...state.loggedinUser, balance: state.loggedinUser.balance + action.balance }
+            return { ...state, loggedinUser: user }
 
         // case SAVE_USER:
         //     return { ...state, loggedinUser: action.user }

@@ -41,16 +41,8 @@ export function AppHeader() {
         <header className="app-header">
             <nav>
                 <NavLink to="/">Home</NavLink> |
-                {/* <NavLink to="/car">Cars</NavLink> | */}
-                <NavLink to="/about">About</NavLink> |
                 <NavLink to="/todo">Todo</NavLink> |
                 <NavLink to="/profile">Profile</NavLink>
-                {/* <a href="#" onClick={(ev) => {
-                    ev.preventDefault()
-                    dispatch({ type: SET_CART_IS_SHOWN, isCartShown: !isCartShown })
-                }}>
-                    🛒 Cart
-                </a> */}
             </nav>
             <h1>My App</h1>
             <ProgressBar todosLength={todosLength} todosDoneLength={todosDoneLength} />

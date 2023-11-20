@@ -48,7 +48,7 @@ export function UserProfile() {
             </form>
 
             <h2>Activities:</h2>
-            {user.activities.join(' ')}
+            {user.activities.map((a, i) => <li key={i}>{a.type} , {a.txt}</li>)}
         </section>
     )
 }

@@ -1,5 +1,6 @@
 
 import { storageService } from './async-storage.service.js'
+import { userService } from './user.service.js'
 
 const STORAGE_KEY = 'todoDB'
 
@@ -12,7 +13,7 @@ export const todoService = {
 }
 
 
-function query(filterBy ={}) {
+function query(filterBy = {}) {
     // return axios.get(BASE_URL).then(res => res.data)
     return storageService.query(STORAGE_KEY)
     // .then(todos=>{
@@ -27,13 +28,19 @@ function getById(todoId) {
 function remove(todoId) {
     // return Promise.reject('Not now!')
     return storageService.remove(STORAGE_KEY, todoId)
+    .then(()=>{
+        userService.addActivity('Remove the Todo', todoId)
+    })
 }
 function save(todo) {
     if (todo._id) {
+        userService.addActivity('Update a Todo', todo.txt)
+        userService.updateBalance(10)
         return storageService.put(STORAGE_KEY, todo)
     } else {
         // when switching to backend - remove the next line
         ///// todo.owner = userService.getLoggedinUser()
+        userService.addActivity('Added a Todo', todo.txt)
         return storageService.post(STORAGE_KEY, todo)
     }
 }
