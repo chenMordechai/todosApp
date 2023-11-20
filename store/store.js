@@ -11,12 +11,13 @@ export const SET_FILTER = 'SET_FILTER'
 export const SET_TODOS_ISDONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
 
 export const SET_USER = 'SET_USER'
+// export const SAVE_USER = 'SAVE_USER'
 
 const initialState = {
     todos: [],
-    currFilterBy: {txt:'' , status:'all' },
-    loggedinUser: null,
-    todosIsDoneLength:0,
+    currFilterBy: { txt: '', status: 'all' },
+    loggedinUser: userService.getLoggedinUser(),
+    todosIsDoneLength: 0,
 }
 
 
@@ -24,32 +25,35 @@ function appReducer(state = initialState, action) {
     let todos
     switch (action.type) {
         case SET_TODOS:
-            if(state.currFilterBy.status === 'all') todos = action.todos
-            else{
-               todos = action.todos.filter(t=>t.isDone && state.currFilterBy.status === 'done' 
-                 || !t.isDone && state.currFilterBy.status === 'active')
+            if (state.currFilterBy.status === 'all') todos = action.todos
+            else {
+                todos = action.todos.filter(t => t.isDone && state.currFilterBy.status === 'done'
+                    || !t.isDone && state.currFilterBy.status === 'active')
             }
             const regex = new RegExp(state.currFilterBy.txt, 'i')
             todos = todos.filter(t => regex.test(t.txt))
-           return {... state , todos}
-           
-        case SET_TODOS_ISDONE_LENGTH:{
-            return {... state , todosIsDoneLength: state.todos.filter(t=>t.isDone).length}
+            return { ...state, todos }
+
+        case SET_TODOS_ISDONE_LENGTH: {
+            return { ...state, todosIsDoneLength: state.todos.filter(t => t.isDone).length }
         }
-           case ADD_TODO:
-               return {... state , todos: [...state.todos , action.todo]}
-               
-               case REMOVE_TODO:
-                   return {... state , todos: state.todos.filter(t=>t._id !== action.todoId)}
-                   
-                   case UPDATE_TODO:
-                       return {... state , todos: state.todos.map(t=>t._id === action.todo._id ? action.todo : t)}
-                       
-                       case SET_FILTER:
-                          return {... state , currFilterBy: action.filterBy}
-                       
-                       case SET_USER:
-                          return {... state , loggedinUser: action.user}
+        case ADD_TODO:
+            return { ...state, todos: [...state.todos, action.todo] }
+
+        case REMOVE_TODO:
+            return { ...state, todos: state.todos.filter(t => t._id !== action.todoId) }
+
+        case UPDATE_TODO:
+            return { ...state, todos: state.todos.map(t => t._id === action.todo._id ? action.todo : t) }
+
+        case SET_FILTER:
+            return { ...state, currFilterBy: action.filterBy }
+
+        case SET_USER:
+            return { ...state, loggedinUser: action.user }
+
+        // case SAVE_USER:
+        //     return { ...state, loggedinUser: action.user }
 
 
         default:

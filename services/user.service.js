@@ -10,7 +10,8 @@ export const userService = {
     logout,
     signup,
     getLoggedinUser,
-    addActivity
+    addActivity,
+    save
 }
 
 
@@ -26,7 +27,17 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, balance:10000, activities:[] }
+    const user = {
+        username,
+        password,
+        fullname,
+        balance: 10000,
+        activities: [],
+        prefs: {
+            color: 'black',
+            bgColor: 'white'
+        }
+    }
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
@@ -55,11 +66,29 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance }
+    const { _id, fullname, username, balance, activities, prefs } = user
+    const userToSave = {
+        _id,
+        fullname,
+        username,
+        balance,
+        activities,
+        prefs
+    }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
 
-function addActivity(){
+function getById(userId) {
+    return storageService.get(STORAGE_KEY, userId)
+
+}
+
+function save(user) {
+    return storageService.put(STORAGE_KEY, user)
+        .then(_setLoggedinUser)
+}
+
+function addActivity() {
 
 }

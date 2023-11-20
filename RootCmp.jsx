@@ -11,6 +11,7 @@ import { CarIndex } from './pages/CarIndex.jsx'
 import { store } from './store/store.js'
 import { TodoApp } from './pages/TodoApp.jsx'
 import { TodoEdit } from './pages/TodoEdit.jsx'
+import { UserProfile } from './pages/UserProfile.jsx'
 
 
 export function App() {
@@ -24,6 +25,7 @@ export function App() {
                         <Routes>
                             <Route element={<HomePage />} path="/" />
                             <Route element={<AboutUs />} path="/about" />
+                            <Route element={<UserProfile />} path="/profile" />
                             {/* <Route element={<CarIndex />} path="/car" /> */}
                             <Route element={<TodoApp />} path="/todo" />
                             <Route element={<TodoEdit />} path="/todo/edit/:todoId" />

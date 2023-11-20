@@ -1,10 +1,10 @@
 const { NavLink } = ReactRouterDOM
-const { useState , useEffect} = React
+const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 
 
 import { userService } from '../services/user.service.js'
-import {SET_TODOS_ISDONE_LENGTH , SET_USER} from '../store/store.js'
+import { SET_TODOS_ISDONE_LENGTH, SET_USER } from '../store/store.js'
 
 import { LoginSignup } from './LoginSignup.jsx'
 import { ProgressBar } from './ProgressBar.jsx'
@@ -14,13 +14,13 @@ export function AppHeader() {
     // get from storeState
     // const isCartShown = useSelector(storeState => storeState.isCartShown)
     const user = useSelector(storeState => storeState.loggedinUser)
-
+    console.log('user:', user)
     const todosDoneLength = useSelector(storeState => storeState.todosIsDoneLength)
-    const todosLength =useSelector(storeState => storeState.todos.length)
+    const todosLength = useSelector(storeState => storeState.todos.length)
 
-    useEffect(()=>{
-        dispatch({type:SET_TODOS_ISDONE_LENGTH})
-    },[todosLength])
+    useEffect(() => {
+        dispatch({ type: SET_TODOS_ISDONE_LENGTH })
+    }, [todosLength])
 
     function onSetUser(user) {
         console.log('user:', user)
@@ -44,6 +44,7 @@ export function AppHeader() {
                 {/* <NavLink to="/car">Cars</NavLink> | */}
                 <NavLink to="/about">About</NavLink> |
                 <NavLink to="/todo">Todo</NavLink> |
+                <NavLink to="/profile">Profile</NavLink>
                 {/* <a href="#" onClick={(ev) => {
                     ev.preventDefault()
                     dispatch({ type: SET_CART_IS_SHOWN, isCartShown: !isCartShown })
@@ -52,16 +53,16 @@ export function AppHeader() {
                 </a> */}
             </nav>
             <h1>My App</h1>
-                <ProgressBar todosLength={todosLength} todosDoneLength={todosDoneLength}/>
-          
+            <ProgressBar todosLength={todosLength} todosDoneLength={todosDoneLength} />
+
             {user && <section className="user-info">
                 <p>{user.fullname}</p>
                 <button onClick={onLogout}>Logout</button>
             </section>}
-            
+
             {!user && <section className="user-info">
                 <LoginSignup onSetUser={onSetUser} />
-        </section>}
+            </section>}
         </header >
     )
 }
