@@ -34,14 +34,20 @@ function remove(todoId) {
 }
 function save(todo) {
     if (todo._id) {
-        userService.addActivity('Update a Todo', todo.txt)
         userService.updateBalance(10)
         return storageService.put(STORAGE_KEY, todo)
+        .then((savedTodo)=>{
+            userService.addActivity('Update a Todo', todo.txt)
+            return savedTodo
+        })
     } else {
         // when switching to backend - remove the next line
         ///// todo.owner = userService.getLoggedinUser()
-        userService.addActivity('Added a Todo', todo.txt)
         return storageService.post(STORAGE_KEY, todo)
+        .then((savedTodo)=>{
+            userService.addActivity('Added a Todo', todo.txt)
+        return savedTodo
+        })
     }
 }
 

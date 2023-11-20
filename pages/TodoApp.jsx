@@ -11,8 +11,10 @@ const { useSelector, useDispatch } = ReactRedux
 
 export function TodoApp() {
     const dispatch = useDispatch()
+
     const todos = useSelector(storeState => storeState.todos)
     const filterBy = useSelector(storeState => storeState.currFilterBy)
+    const user = useSelector(storeState => storeState.loggedinUser)
 
     useEffect(() => {
         todoService.query()
@@ -31,27 +33,22 @@ export function TodoApp() {
                 showSuccessMsg(`Todo added (id: ${savedTodo._id})`)
             })
             .catch(err => {
-                console.log('Cannot add todo', err)
                 showErrorMsg('Cannot add todo')
             })
     }
 
-    function removeTodo(todoId) {
-        // console.log('remove:', todoId)
+    function onRemoveTodo(todoId) {
         todoService.remove(todoId)
             .then(() => {
-                console.log('then:')
                 showSuccessMsg('Todo removed')
                 dispatch({ type: REMOVE_TODO, todoId })
             })
             .catch(err => {
-                console.log('Cannot remove todo', err)
                 showErrorMsg('Cannot remove todo')
             })
     }
 
-    function toggleTodo(todo) {
-        const todoToSave = { ...todo, isDone: !todo.isDone }
+    function onUpdateTodo(todoToSave) {
         todoService.save(todoToSave)
             .then(todo => {
                 dispatch({ type: UPDATE_TODO, todo })
@@ -64,15 +61,20 @@ export function TodoApp() {
         dispatch({ type: SET_FILTER, filterBy })
     }
 
+    function getStyleByUser(){
+        return {
+            color:(user)? user.prefs.color : '#000',
+            backgroundColor:(user)? user.prefs.bgColor : '#fff'
+        }
+
+    }
     return (
-        <section className="todo-app">
+        <section className="todo-app" style={getStyleByUser()}>
             <TodoFilter filterBy={filterBy} changeFilterBy={changeFilterBy} />
             <h2>Todo App</h2>
             <button onClick={onAddTodo}>Add Todo</button>
 
-            <TodoList todos={todos} toggleTodo={toggleTodo} removeTodo={removeTodo} />
-
-
+            <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onRemoveTodo={onRemoveTodo} />
         </section>
     )
 }

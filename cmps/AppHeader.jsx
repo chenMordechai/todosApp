@@ -14,7 +14,6 @@ export function AppHeader() {
     // get from storeState
     // const isCartShown = useSelector(storeState => storeState.isCartShown)
     const user = useSelector(storeState => storeState.loggedinUser)
-    console.log('user:', user)
     const todosDoneLength = useSelector(storeState => storeState.todosIsDoneLength)
     const todosLength = useSelector(storeState => storeState.todos.length)
 
@@ -23,7 +22,6 @@ export function AppHeader() {
     }, [todosLength])
 
     function onSetUser(user) {
-        console.log('user:', user)
         dispatch({ type: SET_USER, user })
     }
 

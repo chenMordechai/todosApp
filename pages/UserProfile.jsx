@@ -7,7 +7,7 @@ export function UserProfile() {
     const dispatch = useDispatch()
 
     const user = useSelector(storeState => storeState.loggedinUser)
-
+console.log('user in profile:', user.activities)
     function handleChange(ev) {
         const { name, value } = ev.target
         let userToSave
@@ -27,6 +27,16 @@ export function UserProfile() {
         ev.preventDefault()
         saveChanges(user)
     }
+
+    
+  function setActivitieTime(at) {
+    const timeDiff = new Date(Date.now() - at)
+    const atByMin = timeDiff.getMinutes()
+    if (atByMin < 60) return atByMin + ' minutes ago:'
+    else if (atByMin > 60) return 'Couple of hours ago: '
+    else if (atByMin > 60 * 24) return 'A day or more ago: '
+  }
+
 
     if (!user) return ''
     return (
@@ -48,7 +58,10 @@ export function UserProfile() {
             </form>
 
             <h2>Activities:</h2>
-            {user.activities.map((a, i) => <li key={i}>{a.type} , {a.txt}</li>)}
+            {user.activities.map((a, i) => <li key={i}> 
+           { setActivitieTime(a.at)}
+            {a.txt}
+            </li>)}
         </section>
     )
 }

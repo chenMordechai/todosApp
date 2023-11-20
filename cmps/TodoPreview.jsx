@@ -1,19 +1,16 @@
 
 const {Link } = ReactRouterDOM
 
-export function TodoPreview({ todo, toggleTodo ,removeTodo }) {
+export function TodoPreview({ todo, onUpdateTodo ,onRemoveTodo }) {
 
     function onToggleTodo() {
-        toggleTodo(todo)
-    }
-    function onRemoveTodo(ev){
-        ev.stopPropagation()
-        removeTodo(todo._id)
+        const todoToSave = { ...todo, isDone: !todo.isDone }
+        onUpdateTodo(todoToSave)
     }
     return (
         <section className="todo-preview">
+            <button onClick={()=> onRemoveTodo(todo._id)}>x</button> 
             <h3 onClick={onToggleTodo}> 
-            <button onClick={onRemoveTodo}>x</button> 
            <span  className={todo.isDone ? 'done' : ''}>{todo.txt} </span> 
             <Link to={`edit/${todo._id}`}>Edit</Link>
             </h3>

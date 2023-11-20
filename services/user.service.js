@@ -1,10 +1,5 @@
 import { storageService } from './async-storage.service.js'
 
-const STORAGE_KEY = 'userDB'
-const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
-
-
-
 export const userService = {
     login,
     logout,
@@ -16,6 +11,8 @@ export const userService = {
     getById
 }
 
+const STORAGE_KEY = 'userDB'
+const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
 
 
 function login({ username, password }) {
@@ -91,17 +88,20 @@ function save(user) {
 }
 
 function addActivity(type, txt) {
-    // console.log('type,txt:', type, txt)
+    console.log('addActivity')
     const activity ={
         txt : `${type} ${txt}`,
-        ad : Date.now()
+        at : Date.now()
     }
-    
-    return userService.getById(getLoggedinUser()._id)
+    console.log('activity:', activity)
+    return getById(getLoggedinUser()._id)
     .then(user => {
+        console.log('user:', user)
         user.activities.push(activity)
         return storageService.put(STORAGE_KEY, user)
     })
-    .then(_setLoggedinUser)
+    .then((u)=>{
+        console.log('u:', u.activities)
+      return  _setLoggedinUser(u)})
 
 }

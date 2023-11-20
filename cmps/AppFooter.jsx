@@ -2,11 +2,11 @@ const { useSelector, useDispatch } = ReactRedux
 
 
 export function AppFooter() {
-    const userBalance = useSelector(storeState => storeState.loggedinUser.balance)
+    const user = useSelector(storeState => storeState.loggedinUser)
 
     return (
         <footer>
-            {userBalance && <h2>userBalance:{userBalance}</h2>}
+            {user && <h2>userBalance:{user.balance}</h2>}
         </footer>
     )
 }
