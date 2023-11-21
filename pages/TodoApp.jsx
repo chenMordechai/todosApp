@@ -2,10 +2,12 @@ import { TodoList } from "../cmps/TodoList.jsx";
 import { TodoFilter } from "../cmps/TodoFilter.jsx";
 import { todoService } from '../services/todo.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-
-import { SET_TODOS, ADD_TODO, REMOVE_TODO, UPDATE_TODO, SET_FILTER, SET_TODOS_ISDONE_LENGTH, SET_USER_BALANCE, SET_USER_ACTIVITIES } from '../store/store.js'
 import { userService } from "../services/user.service.js";
 import { TodoAdd } from "../cmps/TodoAdd.jsx";
+
+import { SET_TODOS, ADD_TODO, REMOVE_TODO, UPDATE_TODO, SET_FILTER, SET_TODOS_ISDONE_LENGTH } from '../store/reducers/todo.reducer.js'
+import { SET_USER_BALANCE, SET_USER_ACTIVITIES } from '../store/reducers/user.reducer.js'
+import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic } from '../store/actions/todo.actions.js'
 
 const { useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
@@ -13,16 +15,12 @@ const { useSelector, useDispatch } = ReactRedux
 export function TodoApp() {
     const dispatch = useDispatch()
 
-    const todos = useSelector(storeState => storeState.todos)
-    const filterBy = useSelector(storeState => storeState.currFilterBy)
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const todos = useSelector(storeState => storeState.todoModule.todos)
+    const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
     useEffect(() => {
-        todoService.query(filterBy)
-            // use dispatch
-            .then(todos => {
-                dispatch({ type: SET_TODOS, todos })
-            })
+        loadTodos()
             .catch(err => {
                 console.log('err:', err)
                 showErrorMsg('Cannot load todo')
@@ -30,51 +28,21 @@ export function TodoApp() {
     }, [filterBy])
 
     function onRemoveTodo(todoId) {
-        todoService.remove(todoId)
-            .then(() => {
-                showSuccessMsg('Todo removed')
-                dispatch({ type: REMOVE_TODO, todoId })
-                userService.addActivity('Remove the Todo', todoId)
-                    .then(activities => {
-                        dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
-                    })
-            })
+        removeTodo(todoId)
             .catch(err => {
                 showErrorMsg('Cannot remove todo', err)
             })
     }
 
     function onAddTodo(todoToSave) {
-        // const todoToSave = todoService.getEmptyTodo()
-        todoService.save(todoToSave)
-            .then((savedTodo) => {
-                dispatch({ type: ADD_TODO, todo: savedTodo })
-                showSuccessMsg(`Todo added (id: ${savedTodo._id})`)
-                userService.addActivity('Add a Todo!!!!', savedTodo.txt)
-                    .then(activities => {
-                        dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
-                    })
-            })
+        addTodo(todoToSave)
             .catch(err => {
                 showErrorMsg('Cannot add todo', err)
             })
     }
 
     function onUpdateTodo(todoToSave) {
-        todoService.save(todoToSave)
-            .then(savedTodo => {
-                dispatch({ type: UPDATE_TODO, savedTodo })
-                dispatch({ type: SET_TODOS_ISDONE_LENGTH })
-                userService.addActivity('Update a Todo!!!!', savedTodo.txt)
-                    .then(activities => {
-                        dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
-                    })
-                userService.updateBalance(10)
-                    .then((newScore) => {
-                        dispatch({ type: SET_USER_BALANCE, balance: newScore })
-                    })
-
-            })
+        updateTodo(todoToSave)
             .catch(err => {
                 showErrorMsg('Cannot update todo', err)
             })

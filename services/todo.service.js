@@ -9,7 +9,8 @@ export const todoService = {
     getById,
     save,
     remove,
-    getEmptyTodo
+    getEmptyTodo,
+    getDefaultFilter
 }
 
 
@@ -55,6 +56,10 @@ function getEmptyTodo() {
         txt: '',
         isDone: false,
     }
+}
+
+function getDefaultFilter() {
+    return { txt: '', status: 'all' }
 }
 
 

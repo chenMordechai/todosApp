@@ -1,12 +1,12 @@
 import { userService } from '../services/user.service.js'
-import { SET_USER } from '../store/store.js'
+import { SET_USER } from '../store/reducers/user.reducer.js'
 
 const { useSelector, useDispatch } = ReactRedux
 
 export function UserProfile() {
     const dispatch = useDispatch()
 
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
     function handleChange(ev) {
         const { name, value } = ev.target

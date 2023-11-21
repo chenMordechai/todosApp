@@ -2,7 +2,7 @@ const { useSelector, useDispatch } = ReactRedux
 
 
 export function AppFooter() {
-    const user = useSelector(storeState => storeState.loggedinUser)
+    const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
     return (
         <footer>
