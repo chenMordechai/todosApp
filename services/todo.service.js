@@ -3,6 +3,7 @@ import { storageService } from './async-storage.service.js'
 import { userService } from './user.service.js'
 
 const STORAGE_KEY = 'todoDB'
+const PAGE_SIZE = 3
 
 export const todoService = {
     query,
@@ -10,23 +11,42 @@ export const todoService = {
     save,
     remove,
     getEmptyTodo,
-    getDefaultFilter
+    getDefaultFilter,
+    getDefaultSort
 }
 
 
-function query(filterBy = {}) {
+function query(filterBy = {}, sortBy = {}) {
     // return axios.get(BASE_URL).then(res => res.data)
-    if (!filterBy.txt) filterBy.txt = ''
-    if (!filterBy.status) filterBy.status = 'all'
-    const regExp = new RegExp(filterBy.txt, 'i')
+    // if (!filterBy.txt) filterBy.txt = ''
+    // if (!filterBy.status) filterBy.status = 'all'
+    // if (!sortBy.type) sortBy.type = ''
+    // if (!sortBy.des) sortBy.des = 1
+    // else sortBy.des = -1
 
     return storageService.query(STORAGE_KEY)
         .then(todos => {
-            let todosToSend
-            if (filterBy.status === 'all') todosToSend = todos
-            else todosToSend = todos.filter(t => t.isDone && filterBy.status === 'done'
-                || !t.isDone && filterBy.status === 'active')
-            return todosToSend.filter(t => regExp.test(t.txt))
+            let todosToSend = todos.slice()
+            if (filterBy.txt) {
+                const regExp = new RegExp(filterBy.txt, 'i')
+                todosToSend = todosToSend.filter(t => regExp.test(t.txt))
+            }
+
+            if (filterBy.status !== 'all') {
+                todosToSend = todos.filter(t => t.isDone && filterBy.status === 'done'
+                    || !t.isDone && filterBy.status === 'active')
+            }
+
+            if (sortBy.type) {
+                todosToSend.sort(((t1, t2) => t1.txt.localeCompare(t2.txt) * sortBy.des))
+            }
+            const pageCount = Math.ceil(todosToSend.length / PAGE_SIZE)
+            if (filterBy.pageIdx !== undefined) {
+                let start = filterBy.pageIdx * PAGE_SIZE // 0 , 3 , 6 , 9
+                todosToSend = todosToSend.slice(start, start + PAGE_SIZE)
+            }
+
+            return { todos: todosToSend, pageCount }
         })
 }
 function getById(todoId) {
@@ -59,7 +79,10 @@ function getEmptyTodo() {
 }
 
 function getDefaultFilter() {
-    return { txt: '', status: 'all' }
+    return { txt: '', status: 'all' , pageIdx:0 }
+}
+function getDefaultSort() {
+    return { type: '', des: false }
 }
 
 

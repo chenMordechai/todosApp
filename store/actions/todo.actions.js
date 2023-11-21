@@ -3,21 +3,29 @@ import { userService } from "../../services/user.service.js";
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service.js'
 
 
-import { SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_ISDONE_LENGTH } from "../reducers/todo.reducer.js";
+import { SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_ISDONE_LENGTH, SET_IS_LOADING, SET_PAGE_COUNT } from "../reducers/todo.reducer.js";
 import { SET_USER_ACTIVITIES, SET_USER_BALANCE } from "../reducers/user.reducer.js";
 
 import { store } from "../store.js";
 
 export function loadTodos() {
+    console.log('loadTodos')
     const { filterBy } = store.getState().todoModule
+    const { sortBy } = store.getState().todoModule
 
-    return todoService.query(filterBy)
-        .then(todos => {
-            store.dispatch({ type: SET_TODOS, todos })
+    store.dispatch({ type: SET_IS_LOADING, isLoading: true })
+
+    return todoService.query({ ...filterBy }, { ...sortBy })
+        .then(data => {
+            store.dispatch({ type: SET_TODOS, todos: data.todos })
+            store.dispatch({ type: SET_PAGE_COUNT, pageCount: data.pageCount })
         })
         .catch(err => {
             console.log('todo action -> Cannot load todos', err)
             throw err
+        })
+        .finally(() => {
+            store.dispatch({ type: SET_IS_LOADING, isLoading: false })
         })
 }
 
