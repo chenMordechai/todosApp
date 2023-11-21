@@ -45,19 +45,6 @@ function getById(userId) {
     return storageService.get(STORAGE_KEY, userId)
 }
 
-function updateBalance(diff) {
-    return userService.getById(getLoggedinUser()._id)
-        .then(user => {
-            user.balance += diff
-            return storageService.put(STORAGE_KEY, user)
-
-        })
-        .then(user => {
-            _setLoggedinUser(user)
-            return user.balance
-        })
-}
-
 function logout() {
     sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN)
     return Promise.resolve()
@@ -82,26 +69,37 @@ function _setLoggedinUser(user) {
 }
 
 
+// change name - perfect
 function save(user) {
     return storageService.put(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
 
-function addActivity(type, txt) {
-    console.log('addActivity')
-    const activity ={
-        txt : `${type} ${txt}`,
-        at : Date.now()
-    }
-    console.log('activity:', activity)
+// change balance - yes reactive not in service
+function updateBalance(diff) {
     return getById(getLoggedinUser()._id)
-    .then(user => {
-        console.log('user:', user)
-        user.activities.push(activity)
-        return storageService.put(STORAGE_KEY, user)
-    })
-    .then((u)=>{
-        console.log('u:', u.activities)
-      return  _setLoggedinUser(u)})
+        .then(user => {
+            user.balance += diff
+            return save(user)
+        })
+        .then((user) => {
+            return user.balance
+        })
+}
+
+//change activity - not reactive , yes in service
+function addActivity(type, txt) {
+    const activity = {
+        txt: `${type} ${txt}`,
+        at: Date.now()
+    }
+    return getById(getLoggedinUser()._id)
+        .then(user => {
+            user.activities.push(activity)
+            return save(user)
+        })
+        .then((user) => {
+            return user.activities
+        })
 
 }

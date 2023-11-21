@@ -1,23 +1,37 @@
+import { utilService } from "../services/util.service.js"
+
+const { useState, useEffect, useRef } = React
 
 
-export function TodoFilter({filterBy , changeFilterBy}) {
+export function TodoFilter({ filterBy, onSetFilter }) {
 
-    function handleChange(ev){
-const {name,value} = ev.target
-changeFilterBy({...filterBy , [name]: value})
+    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+
+    onSetFilter = useRef(utilService.debounce(onSetFilter))
+
+    useEffect(() => {
+        onSetFilter.current(filterByToEdit)
+    }, [filterByToEdit])
+
+
+    function handleChange(ev) {
+        const { name, value } = ev.target
+        setFilterByToEdit(prevFilter => ({ ...prevFilter, [name]: value }))
     }
 
     return (
         <section className="todo-filter">
             <h2>Todo Filter</h2>
-            <label htmlFor="txt">Text:</label>
-            <input onChange={handleChange} name="txt" value={filterBy.txt} type="text" id="txt" />
-            <br />
-            <select onChange={handleChange} name="status" value={filterBy.status} >
-                <option value="all">All</option>
-                <option value="active">Active</option>
-                <option value="done">Done</option>
-            </select>
+            <form >
+                <label htmlFor="txt">Text:</label>
+                <input onChange={handleChange} name="txt" value={filterByToEdit.txt} type="text" id="txt" />
+                <br />
+                <select onChange={handleChange} name="status" value={filterByToEdit.status} >
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="done">Done</option>
+                </select>
+            </form>
         </section>
     )
 }
