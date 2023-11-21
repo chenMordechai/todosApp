@@ -3,7 +3,7 @@ import { userService } from "../../services/user.service.js";
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service.js'
 
 
-import { SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_ISDONE_LENGTH, SET_IS_LOADING, SET_PAGE_COUNT } from "../reducers/todo.reducer.js";
+import { SET_MSG, SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_ISDONE_LENGTH, SET_IS_LOADING, SET_PAGE_COUNT , SET_ALL_TODOS_LENGTH,SET_TODOS_DONE_LENGTH} from "../reducers/todo.reducer.js";
 import { SET_USER_ACTIVITIES, SET_USER_BALANCE } from "../reducers/user.reducer.js";
 
 import { store } from "../store.js";
@@ -30,10 +30,12 @@ export function loadTodos() {
 }
 
 export function removeTodo(todoId) {
+
     return todoService.remove(todoId)
         .then(() => {
             // showSuccessMsg('Todo removed')
             store.dispatch({ type: REMOVE_TODO, todoId })
+            store.dispatch({ type: SET_MSG, msg: { txt: 'Remove Todo' + todoId, type: 'success', isShow: true } })
             userService.addActivity('Remove the Todo', todoId)
                 .then(activities => {
                     store.dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
@@ -79,6 +81,32 @@ export function updateTodo(todo) {
         })
         .catch(err => {
             console.log('todo action -> Cannot save todo', err)
+            throw err
+        })
+}
+
+
+export function getAllTodosLength(){
+    return todoService.query()
+        .then(data => {
+            store.dispatch({ type: SET_ALL_TODOS_LENGTH, length: data.todos.length })
+            // return data.todos.length
+        })
+        .catch(err => {
+            console.log('todo action -> Cannot load todos', err)
+            throw err
+        })
+}
+
+export function getTodosDoneLength(){
+    const filterBy = {status:'done'}
+    return todoService.query(filterBy)
+        .then(data => {
+            store.dispatch({ type: SET_TODOS_DONE_LENGTH, length: data.todos.length })
+            // return data.todos.length
+        })
+        .catch(err => {
+            console.log('todo action -> Cannot load todos', err)
             throw err
         })
 }

@@ -1,5 +1,5 @@
 import { todoService } from "../../services/todo.service.js"
-import { todoService } from "../../services/util.service.js"
+import { msgService } from "../../services/msg.service.js"
 
 export const SET_TODOS = 'SET_TODOS'
 export const ADD_TODO = 'ADD_TODO'
@@ -9,17 +9,21 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_PAGE_COUNT = 'SET_PAGE_COUNT'
 export const SET_SORT = 'SET_SORT'
-export const SET_TODOS_ISDONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
+export const SET_ALL_TODOS_LENGTH = 'SET_ALL_TODOS_LENGTH'
+export const SET_TODOS_DONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
+
+export const SET_MSG = 'SET_MSG'
 
 const initialState = {
     todos: [],
     filterBy: todoService.getDefaultFilter(),
     sortBy: todoService.getDefaultSort(),
-    todosIsDoneLength: 0,
+    allTodosLength:0,
+    todosDoneLength:0,
     isLoading: false,
     pageCount: 0,
-    msg:utilService.getDefaultMsg()
+    msg: msgService.getDefaultMsg()
 
 }
 
@@ -28,8 +32,11 @@ export function todoReducer(state = initialState, action = {}) {
         case SET_TODOS:
             return { ...state, todos: action.todos }
 
-        case SET_TODOS_ISDONE_LENGTH:
-            return { ...state, todosIsDoneLength: state.todos.filter(t => t.isDone).length }
+        case SET_TODOS_DONE_LENGTH:
+            return { ...state, todosDoneLength: action.length}
+
+        case SET_ALL_TODOS_LENGTH:
+            return { ...state, allTodosLength: action.length }
 
         case ADD_TODO:
             return { ...state, todos: [...state.todos, action.todo] }
@@ -51,6 +58,9 @@ export function todoReducer(state = initialState, action = {}) {
 
         case SET_IS_LOADING:
             return { ...state, isLoading: action.isLoading }
+
+        case SET_MSG:
+            return { ...state, msg: action.msg }
 
         default:
             return state

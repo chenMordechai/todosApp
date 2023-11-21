@@ -26,17 +26,18 @@ function query(filterBy = {}, sortBy = {}) {
 
     return storageService.query(STORAGE_KEY)
         .then(todos => {
+            
             let todosToSend = todos.slice()
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt, 'i')
                 todosToSend = todosToSend.filter(t => regExp.test(t.txt))
             }
-
-            if (filterBy.status !== 'all') {
+            
+            if (filterBy.status !== undefined && filterBy.status !== 'all') {
                 todosToSend = todos.filter(t => t.isDone && filterBy.status === 'done'
-                    || !t.isDone && filterBy.status === 'active')
+                || !t.isDone && filterBy.status === 'active')
             }
-
+            
             if (sortBy.type) {
                 todosToSend.sort(((t1, t2) => t1.txt.localeCompare(t2.txt) * sortBy.des))
             }
@@ -45,7 +46,7 @@ function query(filterBy = {}, sortBy = {}) {
                 let start = filterBy.pageIdx * PAGE_SIZE // 0 , 3 , 6 , 9
                 todosToSend = todosToSend.slice(start, start + PAGE_SIZE)
             }
-
+            // console.log('todosToSend:', todosToSend)
             return { todos: todosToSend, pageCount }
         })
 }

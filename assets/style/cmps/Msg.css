@@ -1,0 +1,23 @@
+.msg {
+    background-color: lightgray;
+    padding: 0.2em 0.5em;
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    color: white;
+    border-radius: 2px;
+}
+
+.success {
+    background-color: greenyellow;
+}
+
+.error {
+    background-color: red;
+}
+
+.msg button {
+    font-size: 0.5em;
+    float: right;
+    margin: 0.5em;
+}

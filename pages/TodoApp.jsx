@@ -3,7 +3,7 @@ import { TodoFilter } from "../cmps/TodoFilter.jsx";
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { TodoAdd } from "../cmps/TodoAdd.jsx";
 
-import { SET_FILTER, SET_SORT } from '../store/reducers/todo.reducer.js'
+import { SET_FILTER, SET_SORT, SET_MSG } from '../store/reducers/todo.reducer.js'
 import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic } from '../store/actions/todo.actions.js'
 import { TodoSort } from "../cmps/TodoSort.jsx";
 
@@ -32,6 +32,7 @@ export function TodoApp() {
         removeTodo(todoId)
             .catch(err => {
                 showErrorMsg('Cannot remove todo', err)
+
             })
     }
 
@@ -58,13 +59,13 @@ export function TodoApp() {
         dispatch({ type: SET_SORT, sortBy })
 
     }
-    
-    function onChangePage(diff){
+
+    function onChangePage(diff) {
         let newPageIdx = filterBy.pageIdx + diff
         if (newPageIdx < 0) newPageIdx = pageCount - 1
         if (newPageIdx >= pageCount) newPageIdx = 0
         // console.log('pageIdx:', pageIdx)
-        dispatch({ type: SET_FILTER, filterBy:{...filterBy,pageIdx:newPageIdx} })
+        dispatch({ type: SET_FILTER, filterBy: { ...filterBy, pageIdx: newPageIdx } })
     }
 
     function getStyleByUser() {
@@ -78,12 +79,12 @@ export function TodoApp() {
     return (
         <section className="todo-app" style={getStyleByUser()}>
             <TodoFilter filterBy={filterBy} onSetFilter={onSetFilter} />
-           
+
             <TodoSort sortBy={sortBy} onSetSort={onSetSort} />
 
             <TodoAdd onAddTodo={onAddTodo} />
 
-            <h2><button onClick={()=>{onChangePage(-1)}}>-</button>Page:{filterBy.pageIdx +1} <button onClick={()=>{onChangePage(1)}}>+</button></h2>
+            <h2><button onClick={() => { onChangePage(-1) }}>-</button>Page:{filterBy.pageIdx + 1} <button onClick={() => { onChangePage(1) }}>+</button></h2>
 
             {isLoading && <h2>Loading...</h2>}
             {!isLoading && <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onRemoveTodo={onRemoveTodo} />}

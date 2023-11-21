@@ -1,12 +1,13 @@
 
 
 export function ProgressBar ({todosLength,todosDoneLength}){
-
+    console.log('todosDoneLength:', todosDoneLength)
+    console.log('todosLength:', todosLength)
+    if(!todosLength ) return ''
     const style ={
         width : todosDoneLength /todosLength * 100
     }
 
-    if(!todosLength ) return ''
     return(
         <section>
 

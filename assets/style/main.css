@@ -12,6 +12,7 @@
 @import "cmps/AppHeader.css";
 @import "cmps/ToggleBtn.css";
 @import "cmps/UserMsg.css";
+@import "cmps/Msg.css";
 
 @import "cmps/CarFilter.css";
 @import "cmps/CarList.css";
