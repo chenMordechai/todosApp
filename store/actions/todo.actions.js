@@ -3,13 +3,12 @@ import { userService } from "../../services/user.service.js";
 import { showSuccessMsg, showErrorMsg } from '../../services/event-bus.service.js'
 
 
-import { SET_MSG, SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_ISDONE_LENGTH, SET_IS_LOADING, SET_PAGE_COUNT , SET_ALL_TODOS_LENGTH,SET_TODOS_DONE_LENGTH} from "../reducers/todo.reducer.js";
+import { SET_MSG, SET_TODOS, REMOVE_TODO, ADD_TODO, TODO_UNDO, UPDATE_TODO, SET_TODOS_DONE_COUNT, SET_IS_LOADING, SET_PAGE_COUNT , SET_ALL_TODOS_COUNT} from "../reducers/todo.reducer.js";
 import { SET_USER_ACTIVITIES, SET_USER_BALANCE } from "../reducers/user.reducer.js";
 
 import { store } from "../store.js";
 
 export function loadTodos() {
-    console.log('loadTodos')
     const { filterBy } = store.getState().todoModule
     const { sortBy } = store.getState().todoModule
 
@@ -17,8 +16,9 @@ export function loadTodos() {
 
     return todoService.query({ ...filterBy }, { ...sortBy })
         .then(data => {
-            store.dispatch({ type: SET_TODOS, todos: data.todos })
-            store.dispatch({ type: SET_PAGE_COUNT, pageCount: data.pageCount })
+            const {todosToDisplay , allTodosCount ,doneTodosCount,pageCount } = data
+            store.dispatch({ type: SET_TODOS, todosToDisplay, allTodosCount, doneTodosCount ,pageCount })
+            // store.dispatch({ type: SET_PAGE_COUNT, pageCount})
         })
         .catch(err => {
             console.log('todo action -> Cannot load todos', err)
@@ -68,7 +68,6 @@ export function updateTodo(todo) {
     return todoService.save(todo)
         .then(savedTodo => {
             store.dispatch({ type: UPDATE_TODO, savedTodo })
-            // store.dispatch({ type: SET_TODOS_DONE_LENGTH })
             userService.addActivity('Update a Todo!!!!', savedTodo.txt)
                 .then(activities => {
                     store.dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
@@ -87,11 +86,9 @@ export function updateTodo(todo) {
 
 
 export function getAllTodosLength(){
-    console.log('hi1')
     return todoService.query()
     .then(data => {
-        console.log('data.todos.length:', data.todos.length)
-        store.dispatch({ type: SET_ALL_TODOS_LENGTH, length: data.todos.length })
+        store.dispatch({ type: SET_ALL_TODOS_COUNT, count: data.allTodosCount })
         // return data.todos.length
     })
     .catch(err => {
@@ -101,11 +98,11 @@ export function getAllTodosLength(){
 }
 
 export function getTodosDoneLength(){
-    console.log('hi2')
-    const filterBy = {status:'done'}
-    return todoService.query(filterBy)
+    console.log('hi:')
+    return todoService.query()
         .then(data => {
-            store.dispatch({ type: SET_TODOS_DONE_LENGTH, length: data.todos.length })
+            console.log('data:', data)
+            store.dispatch({ type: SET_TODOS_DONE_COUNT, count: data.doneTodosCount })
             // return data.todos.length
         })
         .catch(err => {

@@ -27,7 +27,6 @@ export function Msg() {
   }, [])
 
   function closeMsg() {
-    console.log('closeMsg:')
     dispatch({ type: SET_MSG, msg: { ...msg, isShow: false } })
     // clearTimeout(timeoutId.current)
   }

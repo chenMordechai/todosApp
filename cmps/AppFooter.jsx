@@ -8,12 +8,12 @@ const { useSelector, useDispatch } = ReactRedux
 export function AppFooter() {
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
 
-    const todosDoneLength = useSelector(storeState => storeState.todoModule.todosDoneLength)
-    const todosLength = useSelector(storeState => storeState.todoModule.allTodosLength)
+    const todosDoneLength = useSelector(storeState => storeState.todoModule.doneTodosCount)
+    const todosLength = useSelector(storeState => storeState.todoModule.allTodosCount)
 
     useEffect(() => {
-        getAllTodosLength()
-        getTodosDoneLength()
+        // getAllTodosLength()
+        // getTodosDoneLength()
     }, [])
 
 

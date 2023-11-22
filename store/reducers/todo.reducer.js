@@ -9,18 +9,18 @@ export const UPDATE_TODO = 'UPDATE_TODO'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_PAGE_COUNT = 'SET_PAGE_COUNT'
 export const SET_SORT = 'SET_SORT'
-export const SET_ALL_TODOS_LENGTH = 'SET_ALL_TODOS_LENGTH'
-export const SET_TODOS_DONE_LENGTH = 'SET_TODOS_ISDONE_LENGTH'
+export const SET_ALL_TODOS_COUNT = 'SET_ALL_TODOS_COUNT'
+export const SET_TODOS_DONE_COUNT = 'SET_TODOS_ISDONE_COUNT'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
 
 export const SET_MSG = 'SET_MSG'
 
 const initialState = {
-    todos: [],
+    todosToDisplay: [],
+    allTodosCount:0,
+    doneTodosCount:0,
     filterBy: todoService.getDefaultFilter(),
     sortBy: todoService.getDefaultSort(),
-    allTodosLength:0,
-    todosDoneLength:0,
     isLoading: false,
     pageCount: 0,
     msg: msgService.getDefaultMsg()
@@ -30,22 +30,23 @@ const initialState = {
 export function todoReducer(state = initialState, action = {}) {
     switch (action.type) {
         case SET_TODOS:
-            return { ...state, todos: action.todos }
+            const {todosToDisplay , allTodosCount,doneTodosCount ,pageCount} = action
+            return { ...state, todosToDisplay, allTodosCount ,doneTodosCount,pageCount  }
 
-        case SET_TODOS_DONE_LENGTH:
-            return { ...state, todosDoneLength: action.length}
+        case SET_TODOS_DONE_COUNT:
+            return { ...state, doneTodosCount: action.count}
 
-        case SET_ALL_TODOS_LENGTH:
-            return { ...state, allTodosLength: action.length }
+        case SET_ALL_TODOS_COUNT:
+            return { ...state, allTodosCount: action.count }
 
         case ADD_TODO:
-            return { ...state, todos: [action.todo,...state.todos] }
+            return { ...state, todosToDisplay: [action.todo,...state.todosToDisplay] }
 
         case REMOVE_TODO:
-            return { ...state, todos: state.todos.filter(t => t._id !== action.todoId) }
+            return { ...state, todosToDisplay: state.todosToDisplay.filter(t => t._id !== action.todoId) }
 
         case UPDATE_TODO:
-            return { ...state, todos: state.todos.map(t => t._id === action.savedTodo._id ? action.savedTodo : t) }
+            return { ...state, todosToDisplay: state.todosToDisplay.map(t => t._id === action.savedTodo._id ? action.savedTodo : t) }
 
         case SET_FILTER:
             return { ...state, filterBy: action.filterBy }

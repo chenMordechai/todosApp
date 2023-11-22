@@ -9,9 +9,11 @@ export function ProgressBar ({todosLength,todosDoneLength}){
     return(
         <section>
         <div className="progress-bar">
-            <div className="inside" style={style} ></div>
+            <div className="inside" style={style} >
+            {todosDoneLength } / { todosLength}
+            </div>
         </div>
-        {todosDoneLength } / { todosLength}
+      
         </section>
     )
 }

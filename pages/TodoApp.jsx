@@ -13,7 +13,7 @@ const { useSelector, useDispatch } = ReactRedux
 export function TodoApp() {
     const dispatch = useDispatch()
 
-    const todos = useSelector(storeState => storeState.todoModule.todos)
+    const todos = useSelector(storeState => storeState.todoModule.todosToDisplay)
     const filterBy = useSelector(storeState => storeState.todoModule.filterBy)
     const sortBy = useSelector(storeState => storeState.todoModule.sortBy)
     const user = useSelector(storeState => storeState.userModule.loggedinUser)
@@ -43,6 +43,8 @@ export function TodoApp() {
         addTodo(todoToSave)
         .then(()=>{
             getAllTodosLength()
+            // for getting 3 first todos after add
+            loadTodos()
         })
             .catch(err => {
                 showErrorMsg('Cannot add todo', err)

@@ -26,28 +26,34 @@ function query(filterBy = {}, sortBy = {}) {
 
     return storageService.query(STORAGE_KEY)
         .then(todos => {
-            
-            let todosToSend = todos.slice()
+            const todosData ={
+                allTodosCount : todos.length,
+                doneTodosCount : todos.filter(t=>t.isDone).length,
+                todosToDisplay:[],
+                pageCount:0
+            }
+            let todosToDisplay = todos.slice()
             if (filterBy.txt) {
                 const regExp = new RegExp(filterBy.txt, 'i')
-                todosToSend = todosToSend.filter(t => regExp.test(t.txt))
+                todosToDisplay = todosToDisplay.filter(t => regExp.test(t.txt))
             }
             
             if (filterBy.status !== undefined && filterBy.status !== 'all') {
-                todosToSend = todos.filter(t => t.isDone && filterBy.status === 'done'
+                todosToDisplay = todos.filter(t => t.isDone && filterBy.status === 'done'
                 || !t.isDone && filterBy.status === 'active')
             }
             
             if (sortBy.type) {
-                todosToSend.sort(((t1, t2) => t1.txt.localeCompare(t2.txt) * sortBy.des))
+                todosToDisplay.sort(((t1, t2) => t1.txt.localeCompare(t2.txt) * sortBy.des))
             }
-            const pageCount = Math.ceil(todosToSend.length / PAGE_SIZE)
+            const pageCount = Math.ceil(todosToDisplay.length / PAGE_SIZE)
             if (filterBy.pageIdx !== undefined) {
                 let start = filterBy.pageIdx * PAGE_SIZE // 0 , 3 , 6 , 9
-                todosToSend = todosToSend.slice(start, start + PAGE_SIZE)
+                todosToDisplay = todosToDisplay.slice(start, start + PAGE_SIZE)
             }
-            // console.log('todosToSend:', todosToSend)
-            return { todos: todosToSend, pageCount }
+            todosData.pageCount = pageCount
+            todosData.todosToDisplay = todosToDisplay
+            return todosData
         })
 }
 function getById(todoId) {

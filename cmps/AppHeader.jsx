@@ -3,7 +3,7 @@ const { useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 
 import { SET_USER } from '../store/reducers/user.reducer.js'
-import { SET_TODOS_ISDONE_LENGTH } from '../store/reducers/todo.reducer.js'
+import { SET_TODOS_ISDONE_COUNT } from '../store/reducers/todo.reducer.js'
 import { logout } from '../store/actions/user.actions.js'
 
 import { LoginSignup } from './LoginSignup.jsx'
