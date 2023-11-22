@@ -7,6 +7,6 @@
 .progress-bar .inside {
     height: 100%;
     /* width: 20%; */
-    background-color: green;
+    background-color: var(--clr7);
     transition: 1s;
 }

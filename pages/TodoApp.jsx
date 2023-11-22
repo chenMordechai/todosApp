@@ -4,7 +4,7 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { TodoAdd } from "../cmps/TodoAdd.jsx";
 
 import { SET_FILTER, SET_SORT, SET_MSG } from '../store/reducers/todo.reducer.js'
-import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic } from '../store/actions/todo.actions.js'
+import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic , getTodosDoneLength , getAllTodosLength } from '../store/actions/todo.actions.js'
 import { TodoSort } from "../cmps/TodoSort.jsx";
 
 const { useEffect } = React
@@ -30,6 +30,9 @@ export function TodoApp() {
 
     function onRemoveTodo(todoId) {
         removeTodo(todoId)
+        .then(()=>{
+            getAllTodosLength()
+        })
             .catch(err => {
                 showErrorMsg('Cannot remove todo', err)
 
@@ -38,6 +41,9 @@ export function TodoApp() {
 
     function onAddTodo(todoToSave) {
         addTodo(todoToSave)
+        .then(()=>{
+            getAllTodosLength()
+        })
             .catch(err => {
                 showErrorMsg('Cannot add todo', err)
             })
@@ -45,6 +51,9 @@ export function TodoApp() {
 
     function onUpdateTodo(todoToSave) {
         updateTodo(todoToSave)
+        .then(()=>{
+            getTodosDoneLength()
+        })
             .catch(err => {
                 // showErrorMsg('Cannot update todo', err)
             })
@@ -68,27 +77,23 @@ export function TodoApp() {
         dispatch({ type: SET_FILTER, filterBy: { ...filterBy, pageIdx: newPageIdx } })
     }
 
-    function getStyleByUser() {
-        return {
-            color: (user) ? user.prefs.color : '#000',
-            backgroundColor: (user) ? user.prefs.bgColor : '#fff'
-        }
-
-    }
+   
 
     return (
-        <section className="todo-app" style={getStyleByUser()}>
+        <section className="todo-app" >
             <TodoFilter filterBy={filterBy} onSetFilter={onSetFilter} />
-
             <TodoSort sortBy={sortBy} onSetSort={onSetSort} />
-
             <TodoAdd onAddTodo={onAddTodo} />
-
-            <h2><button onClick={() => { onChangePage(-1) }}>-</button>Page:{filterBy.pageIdx + 1} <button onClick={() => { onChangePage(1) }}>+</button></h2>
 
             {isLoading && <h2>Loading...</h2>}
             {!isLoading && <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onRemoveTodo={onRemoveTodo} />}
             {!isLoading && !todos.length && <h2>No {filterBy.status} Todos To Show</h2>}
+           
+            <div className="paiging">
+                <button onClick={() => { onChangePage(-1) }}>-</button>
+                Page:{filterBy.pageIdx + 1} 
+                <button onClick={() => { onChangePage(1) }}>+</button>
+            </div>
         </section>
     )
 }

@@ -1,0 +1,14 @@
+.todo-sort {
+    background-color: var(--clr1);
+    padding: 10px;
+}
+
+.todo-sort form {
+    gap: 20px;
+    /* align-items: start; */
+}
+
+.todo-sort form div {
+    display: flex;
+    gap: 20px;
+}

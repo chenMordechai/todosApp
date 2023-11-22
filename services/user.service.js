@@ -95,7 +95,7 @@ function addActivity(type, txt) {
     }
     return getById(getLoggedinUser()._id)
         .then(user => {
-            user.activities.push(activity)
+            user.activities.unshift(activity)
             return save(user)
         })
         .then((user) => {

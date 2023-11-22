@@ -18,9 +18,11 @@ export function TodoAdd({ onAddTodo }) {
     }
 
     return (
+        <section className="todo-add">
         <form onSubmit={onSubmit}>
             <input type="text" value={todoToAdd.txt} onChange={handleChange} name="txt" />
             <button>Add Todo</button>
         </form>
+        </section>
     )
 }

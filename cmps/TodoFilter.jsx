@@ -21,16 +21,19 @@ export function TodoFilter({ filterBy, onSetFilter }) {
 
     return (
         <section className="todo-filter">
-            <h2>Todo Filter</h2>
             <form >
-                <label htmlFor="txt">Text:</label>
+                <div>
+                <label htmlFor="txt">Filter By Text:</label>
                 <input onChange={handleChange} name="txt" value={filterByToEdit.txt} type="text" id="txt" />
-                <br />
-                <select onChange={handleChange} name="status" value={filterByToEdit.status} >
+                </div>
+                <div>
+                <label htmlFor="status">Filter By Status:</label>
+                <select onChange={handleChange} name="status" id="status" value={filterByToEdit.status} >
                     <option value="all">All</option>
                     <option value="active">Active</option>
                     <option value="done">Done</option>
                 </select>
+                </div>
             </form>
         </section>
     )

@@ -37,25 +37,39 @@ export function UserProfile() {
         else if (atByMin > 60 * 24) return 'A day or more ago: '
     }
 
+    function getStyleByUser() {
+        return {
+            color: (user) ? user.prefs.color : '#000',
+            backgroundColor: (user) ? user.prefs.bgColor : '#fff'
+        }
+
+    }
+
 
     if (!user) return ''
     return (
-        <section className="user-profile">
-            <h2>User Profile</h2>
+        <section className="user-profile" style={getStyleByUser()}>
+            <h2>Profile</h2>
             <h2>Name : {user.fullname}</h2>
-            <h2>Name : {user.balance}</h2>
+            <h2>Balance : {user.balance}</h2>
 
             <form onSubmit={submitForm}>
+                <div>
+
                 <label htmlFor="fullname">Full Name:</label>
                 <input onChange={handleChange} type="text" value={user.fullname} id="fullname" name="fullname" />
-                <br />
+                </div>
+                <div>
+
                 <label htmlFor="color">Color:</label>
                 <input onChange={handleChange} type="color" value={user.prefs.color} id="color" name="color" />
-                <br />
+                </div>
+                <div>
+
                 <label htmlFor="bgColor">BG Color:</label>
                 <input onChange={handleChange} type="color" value={user.prefs.bgColor} id="bgColor" name="bgColor" />
-                <br />
-                <button>Save</button>
+                </div>
+                {/* <button>Save</button> */}
             </form>
 
             <h2>Activities:</h2>

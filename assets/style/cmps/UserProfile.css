@@ -1,0 +1,14 @@
+.user-profile {
+    padding: 10px;
+}
+
+.user-profile form {
+    gap: 10px;
+    background-color: var(--clr3);
+    padding: 10px;
+}
+
+.user-profile div {
+    display: flex;
+    gap: 10px;
+}

@@ -1,0 +1,14 @@
+.todo-filter {
+    background-color: var(--clr1);
+    padding: 10px;
+}
+
+.todo-filter form {
+    gap: 20px;
+    /* align-items: start; */
+}
+
+.todo-filter form div {
+    display: flex;
+    gap: 20px;
+}

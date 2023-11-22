@@ -5,7 +5,7 @@ const { useSelector, useDispatch } = ReactRedux
 export function HomePage() {
 
     return (
-        <section>
+        <section className="home-page">
             <h2>
                Home Page
             </h2 >

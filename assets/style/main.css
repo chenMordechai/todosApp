@@ -10,16 +10,23 @@
 
 /* Components */
 @import "cmps/AppHeader.css";
-@import "cmps/ToggleBtn.css";
-@import "cmps/UserMsg.css";
-@import "cmps/Msg.css";
+@import "cmps/LoginSignup.css";
 
-@import "cmps/CarFilter.css";
-@import "cmps/CarList.css";
-@import "cmps/CarPreview.css";
+@import "cmps/TodoApp.css";
 
-@import "cmps/ShoppingCart.css";
+@import "cmps/TodoFilter.css";
+@import "cmps/TodoSort.css";
+@import "cmps/TodoAdd.css";
 
 @import "cmps/TodoList.css";
 @import "cmps/TodoPreview.css";
+
+@import "cmps/TodoFooter.css";
 @import "cmps/ProgressBar.css";
+
+/* @import "cmps/ToggleBtn.css";
+@import "cmps/UserMsg.css"; */
+@import "cmps/Msg.css";
+
+@import "cmps/UserProfile.css";
+@import "cmps/HomePage.css";

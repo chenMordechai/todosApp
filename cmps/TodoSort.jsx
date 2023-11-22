@@ -22,16 +22,18 @@ export function TodoSort({ sortBy, onSetSort }) {
 
     return (
         <section className="todo-sort">
-            <h2>Todo Sort</h2>
             <form>
-
+                <div>
                 <label htmlFor="sort">Sort By</label>
                 <select onChange={handleChange} id="sort" name="type">
                     <option value=""></option>
                     <option value="txt">Title</option>
                 </select>
+                </div>
+                <div>
                 <label htmlFor="des">Desending</label>
                 <input onChange={handleChange} type="checkbox" id="des" name="des" />
+                </div>
 
             </form>
         </section>

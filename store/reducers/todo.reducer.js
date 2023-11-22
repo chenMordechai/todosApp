@@ -39,7 +39,7 @@ export function todoReducer(state = initialState, action = {}) {
             return { ...state, allTodosLength: action.length }
 
         case ADD_TODO:
-            return { ...state, todos: [...state.todos, action.todo] }
+            return { ...state, todos: [action.todo,...state.todos] }
 
         case REMOVE_TODO:
             return { ...state, todos: state.todos.filter(t => t._id !== action.todoId) }

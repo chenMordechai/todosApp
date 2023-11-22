@@ -68,7 +68,7 @@ export function updateTodo(todo) {
     return todoService.save(todo)
         .then(savedTodo => {
             store.dispatch({ type: UPDATE_TODO, savedTodo })
-            store.dispatch({ type: SET_TODOS_ISDONE_LENGTH })
+            // store.dispatch({ type: SET_TODOS_DONE_LENGTH })
             userService.addActivity('Update a Todo!!!!', savedTodo.txt)
                 .then(activities => {
                     store.dispatch({ type: SET_USER_ACTIVITIES, activities: activities })
@@ -87,18 +87,21 @@ export function updateTodo(todo) {
 
 
 export function getAllTodosLength(){
+    console.log('hi1')
     return todoService.query()
-        .then(data => {
-            store.dispatch({ type: SET_ALL_TODOS_LENGTH, length: data.todos.length })
-            // return data.todos.length
-        })
-        .catch(err => {
-            console.log('todo action -> Cannot load todos', err)
-            throw err
-        })
+    .then(data => {
+        console.log('data.todos.length:', data.todos.length)
+        store.dispatch({ type: SET_ALL_TODOS_LENGTH, length: data.todos.length })
+        // return data.todos.length
+    })
+    .catch(err => {
+        console.log('todo action -> Cannot load todos', err)
+        throw err
+    })
 }
 
 export function getTodosDoneLength(){
+    console.log('hi2')
     const filterBy = {status:'done'}
     return todoService.query(filterBy)
         .then(data => {
