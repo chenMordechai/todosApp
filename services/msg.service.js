@@ -1,10 +1,10 @@
 
 export const msgService = {
-    getDefaultMsg
+    // getDefaultMsg
 }
 
 
 
-function getDefaultMsg() {
-    return { txt: '', type: '', isShow: false }
-}
+// function getDefaultMsg() {
+//     return { txt: '', type: '', isShow: false }
+// }

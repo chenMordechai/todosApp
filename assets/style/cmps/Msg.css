@@ -1,6 +1,11 @@
 .msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
     background-color: lightgray;
-    padding: 0.2em 0.5em;
+    /* padding: 0.2em 0.5em; */
+    padding: 5px;
     position: fixed;
     top: 1em;
     right: 1em;
@@ -9,11 +14,11 @@
 }
 
 .success {
-    background-color: greenyellow;
+    background-color: var(--clr7);
 }
 
 .error {
-    background-color: red;
+    background-color: var(--clr8);
 }
 
 .msg button {

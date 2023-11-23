@@ -3,8 +3,8 @@ import { TodoFilter } from "../cmps/TodoFilter.jsx";
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { TodoAdd } from "../cmps/TodoAdd.jsx";
 
-import { SET_FILTER, SET_SORT, SET_MSG } from '../store/reducers/todo.reducer.js'
-import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic , getTodosDoneLength , getAllTodosLength } from '../store/actions/todo.actions.js'
+import { SET_FILTER, SET_SORT } from '../store/reducers/todo.reducer.js'
+import { loadTodos, removeTodo, addTodo, updateTodo, removeTodoOptimistic, getTodosDoneLength, getAllTodosLength } from '../store/actions/todo.actions.js'
 import { TodoSort } from "../cmps/TodoSort.jsx";
 
 const { useEffect } = React
@@ -30,9 +30,9 @@ export function TodoApp() {
 
     function onRemoveTodo(todoId) {
         removeTodo(todoId)
-        .then(()=>{
-            getAllTodosLength()
-        })
+            .then(() => {
+                getAllTodosLength()
+            })
             .catch(err => {
                 showErrorMsg('Cannot remove todo', err)
 
@@ -41,11 +41,11 @@ export function TodoApp() {
 
     function onAddTodo(todoToSave) {
         addTodo(todoToSave)
-        .then(()=>{
-            getAllTodosLength()
-            // for getting 3 first todos after add
-            loadTodos()
-        })
+            .then(() => {
+                getAllTodosLength()
+                // for getting 3 first todos after add
+                loadTodos()
+            })
             .catch(err => {
                 showErrorMsg('Cannot add todo', err)
             })
@@ -53,9 +53,9 @@ export function TodoApp() {
 
     function onUpdateTodo(todoToSave) {
         updateTodo(todoToSave)
-        .then(()=>{
-            getTodosDoneLength()
-        })
+            .then(() => {
+                getTodosDoneLength()
+            })
             .catch(err => {
                 // showErrorMsg('Cannot update todo', err)
             })
@@ -79,7 +79,7 @@ export function TodoApp() {
         dispatch({ type: SET_FILTER, filterBy: { ...filterBy, pageIdx: newPageIdx } })
     }
 
-   
+
 
     return (
         <section className="todo-app" >
@@ -90,10 +90,10 @@ export function TodoApp() {
             {isLoading && <h2>Loading...</h2>}
             {!isLoading && <TodoList todos={todos} onUpdateTodo={onUpdateTodo} onRemoveTodo={onRemoveTodo} />}
             {!isLoading && !todos.length && <h2>No {filterBy.status} Todos To Show</h2>}
-           
+
             <div className="paiging">
                 <button onClick={() => { onChangePage(-1) }}>-</button>
-                Page:{filterBy.pageIdx + 1} 
+                Page:{filterBy.pageIdx + 1}
                 <button onClick={() => { onChangePage(1) }}>+</button>
             </div>
         </section>

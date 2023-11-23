@@ -8,35 +8,25 @@ const { useSelector, useDispatch } = ReactRedux
 export function Msg() {
   const dispatch = useDispatch()
   const msg = useSelector(storeState => storeState.todoModule.msg)
-  // const timeoutId = useRef()
-
-  const timeoutIdRef = useRef()
 
   useEffect(() => {
-    // console.log('useEffect:')
-    if (timeoutIdRef.current) {
-      timeoutIdRef.current = null
-      clearTimeout(timeoutIdRef.current)
+    if (msg) {
+      var timeoutId = setTimeout(closeMsg, 2000)
     }
-    timeoutIdRef.current = setTimeout(closeMsg, 2000)
-
-    //   const timeoutId = setTimeout(closeMsg, 2000)
-    //   return () => {
-    //     clearTimeout(timeoutId)
-    // }
-  }, [])
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [msg])
 
   function closeMsg() {
-    dispatch({ type: SET_MSG, msg: { ...msg, isShow: false } })
-    // clearTimeout(timeoutId.current)
+    dispatch({ type: SET_MSG, msg: null })
   }
 
-  if (!msg.isShow) return <span></span>
+  if (!msg) return <span></span>
   return (
     <section className={`msg ${msg.type}`}>
-      aaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      <button onClick={closeMsg}>x</button>
       {msg.txt}
+      <button onClick={closeMsg}>x</button>
     </section>
   )
 }

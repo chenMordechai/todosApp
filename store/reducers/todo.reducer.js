@@ -17,30 +17,30 @@ export const SET_MSG = 'SET_MSG'
 
 const initialState = {
     todosToDisplay: [],
-    allTodosCount:0,
-    doneTodosCount:0,
+    allTodosCount: 0,
+    doneTodosCount: 0,
     filterBy: todoService.getDefaultFilter(),
     sortBy: todoService.getDefaultSort(),
     isLoading: false,
     pageCount: 0,
-    msg: msgService.getDefaultMsg()
+    msg: null
 
 }
 
 export function todoReducer(state = initialState, action = {}) {
     switch (action.type) {
         case SET_TODOS:
-            const {todosToDisplay , allTodosCount,doneTodosCount ,pageCount} = action
-            return { ...state, todosToDisplay, allTodosCount ,doneTodosCount,pageCount  }
+            const { todosToDisplay, allTodosCount, doneTodosCount, pageCount } = action
+            return { ...state, todosToDisplay, allTodosCount, doneTodosCount, pageCount }
 
         case SET_TODOS_DONE_COUNT:
-            return { ...state, doneTodosCount: action.count}
+            return { ...state, doneTodosCount: action.count }
 
         case SET_ALL_TODOS_COUNT:
             return { ...state, allTodosCount: action.count }
 
         case ADD_TODO:
-            return { ...state, todosToDisplay: [action.todo,...state.todosToDisplay] }
+            return { ...state, todosToDisplay: [action.todo, ...state.todosToDisplay] }
 
         case REMOVE_TODO:
             return { ...state, todosToDisplay: state.todosToDisplay.filter(t => t._id !== action.todoId) }
